@@ -1,43 +1,41 @@
 package com.finan.orcamento;
 
 import com.finan.orcamento.model.OrcamentoModel;
+import com.finan.orcamento.model.OrcamentoModelProxy;
 import com.finan.orcamento.model.UsuarioModel;
-import com.finan.orcamento.model.enums.IcmsEstados;
-import jakarta.persistence.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import static com.finan.orcamento.model.enums.IcmsEstados.ICMS_MG;
 
 public class Program {
 
     public static void main(String[] args){
 
-        List<OrcamentoModel> listOrcamentoModel = new ArrayList<>();
+        Locale.setDefault(Locale.US);
 
-        //configurando valores do orcamentoModel
+        /*Para evitar a repetição de código, a simulação de atraso de 5seg com o banco de dados foi acrescentado no
+        método toString da classe OrcamentoModel e não nos métodos get das classes*/
+
         OrcamentoModel orcamentoModel = new OrcamentoModel();
+        OrcamentoModelProxy proxy;
+
         orcamentoModel.setId(1L);
-        orcamentoModel.setIcmsEstados(IcmsEstados.ICMS_MG);
+        orcamentoModel.setIcmsEstados(ICMS_MG);
         orcamentoModel.setValorOrcamento(new BigDecimal("1000.00"));
-        orcamentoModel.calcularIcms();
+        orcamentoModel.setValorICMS(orcamentoModel.calcularIcms());
+        orcamentoModel.setUsuario(new UsuarioModel(1L, "Matheus Carrasco"));
 
-        //configurando Usuario
-        UsuarioModel usuarioModel = new UsuarioModel(1L,"Matheus Carrasco");
-        usuarioModel.setOrcamentos(orcamentoModel);
+        proxy = new OrcamentoModelProxy(orcamentoModel);
 
-        orcamentoModel.setUsuario(usuarioModel);
-
-
-
-        listOrcamentoModel.add(orcamentoModel);
-
-        for(OrcamentoModel orcamento : listOrcamentoModel){
-            System.out.println(orcamento);
-        }
+        System.out.println("Com atraso:: " + orcamentoModel);
+        //segunda chamada apenas para visualizar o atraso
+        System.out.println("Com atraso:: " + orcamentoModel);
 
 
+        //chamada sem atraso
+        System.out.println("Sem atraso:: " + proxy);
     }
-
 }
