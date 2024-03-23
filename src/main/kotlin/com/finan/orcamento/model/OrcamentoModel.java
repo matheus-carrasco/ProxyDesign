@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name="orcamento")
 public class OrcamentoModel implements Serializable {
@@ -69,12 +67,9 @@ public class OrcamentoModel implements Serializable {
         this.valorOrcamento = valorOrcamento;
     }
 
+    //função set ValorICMS removida devido à existencia da função calcularICMS, que retorna valores do package service
     public BigDecimal getValorICMS() {
         return valorICMS;
-    }
-
-    public void setValorICMS(BigDecimal valorICMS) {
-        this.valorICMS = valorICMS;
     }
 
     public UsuarioModel getUsuario() {
@@ -89,4 +84,26 @@ public class OrcamentoModel implements Serializable {
         this.valorICMS = this.icmsEstados.getStrategy().calcular(this.valorOrcamento);
     }
 
+    public String verificaUsuarioLinkadoComOrcamento(){
+        if(getUsuario() == null){
+            return "sem usuário cadastrado";
+        }
+        else{
+            return usuario.toString();
+        }
+    }
+    @Override
+    public String toString() {
+       try{
+            Thread.sleep(5000);
+        }
+       catch (InterruptedException e){
+            throw new RuntimeException(e);
+        }
+        return  "Núm. orcamento: " + getId() + ", " +
+                icmsEstados + ", " +
+                "Valor orcamento: " + String.format("%.2f",valorOrcamento) + ", " +
+                "Valor ICMS: " + valorICMS + ", " +
+                verificaUsuarioLinkadoComOrcamento();
+    }
 }
