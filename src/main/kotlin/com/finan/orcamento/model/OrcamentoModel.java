@@ -34,6 +34,57 @@ public class OrcamentoModel implements Serializable {
     @JoinColumn(name="usuario_id", referencedColumnName = "id")
     private UsuarioModel usuario;
 
+    public OrcamentoModel(){}
+
+    public OrcamentoModel(Long id, IcmsEstados icmsEstados, @NotNull BigDecimal valorOrcamento, BigDecimal valorICMS, UsuarioModel usuario) {
+        this.id = id;
+        this.icmsEstados = icmsEstados;
+        this.valorOrcamento = valorOrcamento;
+        this.valorICMS = valorICMS;
+        this.usuario = usuario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public IcmsEstados getIcmsEstados() {
+        return icmsEstados;
+    }
+
+    public void setIcmsEstados(IcmsEstados icmsEstados) {
+        this.icmsEstados = icmsEstados;
+    }
+
+    @NotNull
+    public BigDecimal getValorOrcamento() {
+        return valorOrcamento;
+    }
+
+    public void setValorOrcamento(@NotNull BigDecimal valorOrcamento) {
+        this.valorOrcamento = valorOrcamento;
+    }
+
+    public BigDecimal getValorICMS() {
+        return valorICMS;
+    }
+
+    public void setValorICMS(BigDecimal valorICMS) {
+        this.valorICMS = valorICMS;
+    }
+
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioModel usuario) {
+        this.usuario = usuario;
+    }
+
     public void calcularIcms() {
         this.valorICMS = this.icmsEstados.getStrategy().calcular(this.valorOrcamento);
     }
